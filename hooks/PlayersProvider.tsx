@@ -1,6 +1,6 @@
 "use client"
 import usePartySocket from "partysocket/react"
-import { createContext, useEffect } from "react"
+import { createContext, useCallback, useEffect } from "react"
 import React from "react"
 
 type Cursor = {
@@ -13,12 +13,12 @@ type OtherCursorsMap = {
 }
 
 interface PlayersContextType {
-  self: Cursor | null
+  sendPosition: (cursor: Cursor) => void
   others: OtherCursorsMap
 }
 
 export const PlayerContext = createContext<PlayersContextType>({
-  self: null,
+  sendPosition: () => null,
   others: {},
 })
 
@@ -27,17 +27,12 @@ export default function PlayerContextProvider(props: {
   room: string
   children: React.ReactNode
 }) {
-  const [self, setSelf] = React.useState<Cursor | null>(null)
-  const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 })
-
   const socket = usePartySocket({
     host: props.host,
     room: props.room,
   })
 
   const [others, setOthers] = React.useState<OtherCursorsMap>({})
-
-  console.log(others)
 
   useEffect(() => {
     if (socket) {
@@ -53,11 +48,16 @@ export default function PlayerContextProvider(props: {
             const other = {
               x: msg.x,
               y: msg.y,
-              country: msg.country,
-              lastUpdate: msg.lastUpdate,
               pointer: msg.pointer,
             }
-            setOthers((others) => ({ ...others, [msg.id]: other }))
+            setOthers((others) => {
+              const o = others[msg.id]
+              const points = o?.points || []
+
+              const newPoints = [...points, { x: msg.x, y: msg.y }].slice(-30)
+
+              return { ...others, [msg.id]: { ...o, points: newPoints } }
+            })
             break
           case "remove":
             setOthers((others) => {
@@ -76,39 +76,16 @@ export default function PlayerContextProvider(props: {
     }
   }, [socket])
 
-  useEffect(() => {
-    const onResize = () => {
-      setDimensions({ width: window.innerWidth, height: window.innerHeight })
-    }
-
-    window.addEventListener("resize", onResize)
-    onResize()
-
-    return () => {
-      window.removeEventListener("resize", onResize)
-    }
-  }, [])
-
-  useEffect(() => {
-    const onMouseMove = (event: MouseEvent) => {
+  const sendPosition = useCallback(
+    (position: { x: number; y: number }) => {
       if (!socket) return
-      if (!dimensions.width || !dimensions.height) return
-
-      const position = {
-        x: event.clientX / dimensions.width,
-        y: event.clientY / dimensions.height,
-      }
       socket.send(JSON.stringify(position))
-    }
-    window.addEventListener("mousemove", onMouseMove)
-
-    return () => {
-      window.removeEventListener("mousemove", onMouseMove)
-    }
-  }, [socket, dimensions])
+    },
+    [socket]
+  )
 
   return (
-    <PlayerContext.Provider value={{ self, others }}>
+    <PlayerContext.Provider value={{ sendPosition, others }}>
       {props.children}
     </PlayerContext.Provider>
   )
