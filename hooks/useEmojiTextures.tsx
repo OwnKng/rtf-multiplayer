@@ -22,7 +22,10 @@ export const useEmojiTextures = (emojis: string[]) => {
       context.clearRect(0, 0, canvas.width, canvas.height)
       context.fillText(emojis[i], canvas.width / 2, canvas.height / 2)
 
-      textureArray[i] = new THREE.CanvasTexture(canvas)
+      const t = new THREE.CanvasTexture(canvas)
+      t.name = emojis[i]
+
+      textureArray[i] = t
     }
 
     return textureArray
