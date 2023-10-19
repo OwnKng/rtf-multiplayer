@@ -3,7 +3,10 @@ import { useGLTF } from "@react-three/drei"
 import { usePlayers } from "@/hooks/usePlayers"
 import { Suspense, useRef } from "react"
 
-export const Model = forwardRef(function Model(props, ref) {
+export const Model = forwardRef(function Model(
+  props: { sticker: string },
+  ref
+) {
   const { nodes } = useGLTF("/LeePerrySmith.glb") as any
 
   const mouseHelper = useRef<THREE.Mesh>(null!)

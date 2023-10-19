@@ -16,12 +16,12 @@ export default function Scene({ sticker }: { sticker: string }) {
   return (
     <>
       <Model ref={meshRef} sticker={sticker} />
-      {Object.entries(stickers).map(([id, sticker]) => (
+      {Object.entries(stickers).map(([id, sticker], i) => (
         <Decal
           key={id}
           position={sticker.position}
           rotation={sticker.rotation}
-          renderOrder={1}
+          renderOrder={i}
           mesh={meshRef}
           map={textures.find((t) => t.name === sticker.sticker)}
         />

@@ -26,11 +26,7 @@ function World() {
         ))}
       </div>
       <div className='w-full h-screen'>
-        <Canvas
-          shadows
-          dpr={[1, 2]}
-          camera={{ fov: 50, position: [-2, 5, 10] }}
-        >
+        <Canvas shadows dpr={1} camera={{ fov: 50, position: [-2, 5, 10] }}>
           <Stage
             preset='rembrandt'
             intensity={1}
