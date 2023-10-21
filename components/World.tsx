@@ -8,15 +8,15 @@ import Scene from "./Scene"
 import { emojis } from "@/utils"
 import { usePlayers } from "@/hooks/usePlayers"
 
-function World() {
+export default function World() {
   const [sticker, setSticker] = useState("🥰")
 
   const { others } = usePlayers()
 
   return (
     <>
-      <div className='absolute top-4 left-4 z-20'>
-        <div className='rounded-lg shadow-lg divide-x border border-lightBlack divide-x divide-lightBlack overflow-hidden rounded-lg shadow-lg'>
+      <div className='absolute w-fit flex md:flex-col h-fit flex-col-reverse md:top-4 bottom-4 z-20 left-1/2 transform -translate-x-1/2'>
+        <div className='rounded-lg shadow-lg divide-x border border-lightBlack divide-x divide-lightBlack overflow-hidden rounded-lg shadow-lg flex'>
           {emojis.map(({ unicode, label }, i) => (
             <button
               key={label}
@@ -30,7 +30,7 @@ function World() {
             </button>
           ))}
         </div>
-        <div className='pt-2 text-white text-sm'>
+        <div className='pt-2 text-white text-sm text-zinc-400'>
           {Object.entries(others).length ? (
             <span>
               {Object.entries(others).length} other player
@@ -56,13 +56,5 @@ function World() {
         </Canvas>
       </div>
     </>
-  )
-}
-
-export default function WorldWithSockets() {
-  return (
-    <SocketWrapper>
-      <World />
-    </SocketWrapper>
   )
 }
