@@ -41,9 +41,12 @@ function Cursor({
   }, [start, end])
 
   return (
-    <line ref={lineRef}>
-      <bufferGeometry attach='geometry' />
-      <lineBasicMaterial attach='material' color='grey' />
-    </line>
+    <>
+      {/* @ts-ignore */}
+      <line ref={lineRef} {...props}>
+        <bufferGeometry attach='geometry' />
+        <lineBasicMaterial attach='material' color='grey' />
+      </line>
+    </>
   )
 }

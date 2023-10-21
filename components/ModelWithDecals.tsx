@@ -1,13 +1,15 @@
 import { useRef } from "react"
 import * as THREE from "three"
 import { usePlayers } from "@/hooks/usePlayers"
-import { Decal, useGLTF } from "@react-three/drei"
+import { Decal } from "@react-three/drei"
 import { Model } from "./Model"
 import { emojis } from "@/utils"
 import { useEmojiTextures } from "@/hooks/useEmojiTextures"
 
 export default function Scene({ sticker }: { sticker: string }) {
-  const textures = useEmojiTextures(emojis.map((e) => e.unicode))
+  const textures = useEmojiTextures(
+    emojis.map((e) => e.unicode)
+  ) as THREE.CanvasTexture[]
 
   const meshRef = useRef<THREE.Mesh>(null!)
 

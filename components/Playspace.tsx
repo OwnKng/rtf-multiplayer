@@ -1,10 +1,9 @@
 "use client"
 import { Canvas } from "@react-three/fiber"
 import { useState } from "react"
-import SocketWrapper from "./SocketWrapper"
 import { OrbitControls, Stage } from "@react-three/drei"
 import Cursors from "./Cursors"
-import Scene from "./Scene"
+import ModelWithDecals from "./ModelWithDecals"
 import { emojis } from "@/utils"
 import { usePlayers } from "@/hooks/usePlayers"
 
@@ -49,7 +48,7 @@ export default function World() {
             environment='city'
             adjustCamera={false}
           >
-            <Scene sticker={sticker} />
+            <ModelWithDecals sticker={sticker} />
           </Stage>
           <Cursors />
           <OrbitControls />

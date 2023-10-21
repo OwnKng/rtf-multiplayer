@@ -1,4 +1,5 @@
-import { forwardRef, useLayoutEffect } from "react"
+//@ts-nocheck
+import { ForwardedRef, forwardRef, useLayoutEffect } from "react"
 import { useGLTF } from "@react-three/drei"
 import { usePlayers } from "@/hooks/usePlayers"
 import { Suspense, useRef } from "react"
@@ -6,7 +7,7 @@ import * as THREE from "three"
 
 export const Model = forwardRef(function Model(
   props: { sticker: string },
-  ref
+  ref: ForwardedRef<THREE.Mesh>
 ) {
   const { nodes } = useGLTF("/LeePerrySmith.glb") as any
 
@@ -48,6 +49,7 @@ export const Model = forwardRef(function Model(
           onPointerMove={({ point, normal }) => {
             if (!point || !normal) return
             const p = point.clone()
+
             mouseHelper.current.position.copy(p)
 
             const n = normal.clone()
