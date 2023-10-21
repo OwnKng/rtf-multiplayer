@@ -1,29 +1,45 @@
 "use client"
-
 import { Canvas } from "@react-three/fiber"
 import { useState } from "react"
 import SocketWrapper from "./SocketWrapper"
 import { OrbitControls, Stage } from "@react-three/drei"
-import { useEmojiTextures } from "@/hooks/useEmojiTextures"
 import Cursors from "./Cursors"
 import Scene from "./Scene"
 import { emojis } from "@/utils"
+import { usePlayers } from "@/hooks/usePlayers"
 
 function World() {
   const [sticker, setSticker] = useState("🥰")
 
+  const { others } = usePlayers()
+
   return (
     <>
-      <div className='absolute top-4 left-4 z-20 rounded-lg shadow-lg divide-x border border-lighterBlack divide-x divide-lighterBlack overflow-hidden rounded-lg bg-lightBlack shadow-lg'>
-        {emojis.map(({ unicode, label }, i) => (
-          <button
-            key={label}
-            onClick={() => setSticker(unicode)}
-            className={`p-2 text-xl hover:bg-lighterBlack focus:bg-gray-100 cursor-pointer`}
-          >
-            {unicode}
-          </button>
-        ))}
+      <div className='absolute top-4 left-4 z-20'>
+        <div className='rounded-lg shadow-lg divide-x border border-lightBlack divide-x divide-lightBlack overflow-hidden rounded-lg shadow-lg'>
+          {emojis.map(({ unicode, label }, i) => (
+            <button
+              key={label}
+              onClick={() => setSticker(unicode)}
+              className={`py-2 px-3 text-xl hover:bg-lighterBlack focus:bg-gray-100 cursor-pointer`}
+              style={{
+                backgroundColor: sticker === unicode ? "#303336" : "#1e1f22",
+              }}
+            >
+              {unicode}
+            </button>
+          ))}
+        </div>
+        <div className='pt-2 text-white text-sm'>
+          {Object.entries(others).length ? (
+            <span>
+              {Object.entries(others).length} other player
+              {Object.entries(others).length > 1 ? "s" : ""} here
+            </span>
+          ) : (
+            <p>No one else is here yet</p>
+          )}
+        </div>
       </div>
       <div className='w-full h-screen'>
         <Canvas shadows dpr={1} camera={{ fov: 50, position: [-2, 5, 10] }}>

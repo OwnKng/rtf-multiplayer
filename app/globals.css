@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --var-colors-black: #131416;
-  --var-colors-light-black: #303336;
-  --var-colors-ligher-black: #1e1f22;
-}
-
 body {
-  background-color: var(--var-colors-black);
+  background-color: #131416;
 }

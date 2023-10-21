@@ -1,11 +1,7 @@
 "use client"
 import { usePlayers } from "@/hooks/usePlayers"
-import { extend } from "@react-three/fiber"
-import { MeshLineGeometry, MeshLineMaterial } from "meshline"
-
+import { useLayoutEffect, useRef } from "react"
 import * as THREE from "three"
-
-extend({ MeshLineGeometry, MeshLineMaterial })
 
 export default function Cursors() {
   const { others } = usePlayers()
@@ -30,17 +26,24 @@ function Cursor({
   start: [number, number, number]
   end: [number, number, number]
 }) {
-  const adjusted = e
-    .set(...end)
-    .multiplyScalar(2)
-    .add(s.set(...start))
+  const lineRef = useRef<THREE.Line>(null!)
+
+  useLayoutEffect(() => {
+    const adjusted = e
+      .set(...end)
+      .multiplyScalar(2)
+      .add(s.set(...start))
+
+    lineRef.current.geometry.setFromPoints([
+      new THREE.Vector3(...start),
+      adjusted,
+    ])
+  }, [start, end])
 
   return (
-    <mesh {...props} renderOrder={999} castShadow>
-      <meshLineGeometry
-        points={[...start, adjusted.x, adjusted.y, adjusted.z]}
-      />
-      <meshLineMaterial lineWidth={0.1} color='#3777FF' />
-    </mesh>
+    <line ref={lineRef}>
+      <bufferGeometry attach='geometry' />
+      <lineBasicMaterial attach='material' color='grey' />
+    </line>
   )
 }

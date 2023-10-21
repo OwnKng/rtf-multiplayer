@@ -1,7 +1,8 @@
-import { forwardRef } from "react"
+import { forwardRef, useLayoutEffect } from "react"
 import { useGLTF } from "@react-three/drei"
 import { usePlayers } from "@/hooks/usePlayers"
 import { Suspense, useRef } from "react"
+import * as THREE from "three"
 
 export const Model = forwardRef(function Model(
   props: { sticker: string },
@@ -10,8 +11,16 @@ export const Model = forwardRef(function Model(
   const { nodes } = useGLTF("/LeePerrySmith.glb") as any
 
   const mouseHelper = useRef<THREE.Mesh>(null!)
+  const lineRef = useRef<THREE.Line>(null!)
 
   const { sendPosition, sendSticker } = usePlayers()
+
+  useLayoutEffect(() => {
+    lineRef.current.geometry.setFromPoints([
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+    ])
+  }, [])
 
   return (
     <>
@@ -49,6 +58,11 @@ export const Model = forwardRef(function Model(
 
             mouseHelper.current.lookAt(n)
 
+            const positions = lineRef.current.geometry.attributes.position
+            positions.setXYZ(0, p.x, p.y, p.z)
+            positions.setXYZ(1, n.x, n.y, n.z)
+            positions.needsUpdate = true
+
             sendPosition([p.x, p.y, p.z], [end.x, end.y, end.z])
           }}
         >
@@ -59,6 +73,10 @@ export const Model = forwardRef(function Model(
         <boxGeometry args={[1, 1, 10]} />
         <meshNormalMaterial />
       </mesh>
+      <line ref={lineRef}>
+        <bufferGeometry attach='geometry' />
+        <lineBasicMaterial attach='material' color='white' />
+      </line>
     </>
   )
 })

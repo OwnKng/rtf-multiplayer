@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import * as THREE from "three"
 import { usePlayers } from "@/hooks/usePlayers"
 import { Decal, useGLTF } from "@react-three/drei"
@@ -21,7 +21,7 @@ export default function Scene({ sticker }: { sticker: string }) {
           key={id}
           position={sticker.position}
           rotation={sticker.rotation}
-          renderOrder={i}
+          renderOrder={Object.entries(stickers).length - i}
           mesh={meshRef}
           map={textures.find((t) => t.name === sticker.sticker)}
         />
