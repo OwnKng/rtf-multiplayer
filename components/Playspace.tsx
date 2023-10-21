@@ -14,7 +14,7 @@ export default function World() {
 
   return (
     <>
-      <div className='absolute w-fit flex md:flex-col h-fit flex-col-reverse md:top-4 bottom-4 z-20 left-1/2 transform -translate-x-1/2'>
+      <div className='absolute w-fit flex md:flex-col h-fit flex-col-reverse top-4 z-20 left-1/2 transform -translate-x-1/2'>
         <div className='rounded-lg shadow-lg divide-x border border-lightBlack divide-x divide-lightBlack overflow-hidden rounded-lg shadow-lg flex'>
           {emojis.map(({ unicode, label }, i) => (
             <button
