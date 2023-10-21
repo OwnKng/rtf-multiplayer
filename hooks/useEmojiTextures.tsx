@@ -11,10 +11,10 @@ export const useEmojiTextures = (emojis: string[]) => {
       const canvas = document.createElement("canvas")
       const context = canvas.getContext("2d")!
 
-      canvas.width = 256
-      canvas.height = 256
+      canvas.width = 128
+      canvas.height = 128
 
-      context.font = "220px serif"
+      context.font = "100px serif"
 
       context.textAlign = "center"
       context.textBaseline = "middle"

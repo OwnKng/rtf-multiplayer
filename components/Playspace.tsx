@@ -29,11 +29,14 @@ export default function World() {
             </button>
           ))}
         </div>
-        <div className='pt-2 text-white text-sm text-zinc-400'>
+        <div className='pt-2 text-sm text-zinc-400'>
           {Object.entries(others).length ? (
             <span>
-              {Object.entries(others).length} other player
-              {Object.entries(others).length > 1 ? "s" : ""} here
+              <span className='text-lg text-white font-bold underline decoration-emerald-500'>
+                {" "}
+                {Object.entries(others).length}
+              </span>{" "}
+              other player{Object.entries(others).length > 1 ? "s" : ""} here
             </span>
           ) : (
             <p>No one else is here yet</p>
