@@ -6,7 +6,7 @@ import { Model } from "./Model"
 import { emojis } from "@/utils"
 import { useEmojiTextures } from "@/hooks/useEmojiTextures"
 
-export default function Scene({ sticker }: { sticker: string }) {
+export default function ModelWithDecals({ sticker }: { sticker: string }) {
   const textures = useEmojiTextures(
     emojis.map((e) => e.unicode)
   ) as THREE.CanvasTexture[]
@@ -23,10 +23,20 @@ export default function Scene({ sticker }: { sticker: string }) {
           key={id}
           position={sticker.position}
           rotation={sticker.rotation}
-          renderOrder={Object.entries(stickers).length - i}
+          renderOrder={i}
           mesh={meshRef}
-          map={textures.find((t) => t.name === sticker.sticker)}
-        />
+          scale={[0.5, 0.5, 0.5]}
+        >
+          <meshBasicMaterial
+            attach='material'
+            transparent
+            map={textures.find((t) => t.name === sticker.sticker)}
+            polygonOffsetFactor={-4}
+            polygonOffset={true}
+            depthTest={true}
+            depthWrite={false}
+          />
+        </Decal>
       ))}
     </>
   )

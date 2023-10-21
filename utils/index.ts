@@ -27,4 +27,8 @@ export const emojis = [
     label: "rainbow",
     unicode: "🌈",
   },
+  {
+    label: "party",
+    unicode: "🎉",
+  },
 ]
